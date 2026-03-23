@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire – Vos Livres Préférés</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #6B8FC2;
+    --blue-dark: #3a5a8a;
+    --blue-light: #dce8f5;
+    --ink: #1a1a2e;
+    --paper: #f8f5f0;
+    --gold: #c9a84c;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, #8aafd4 100%);
+    padding: 60px 20px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .hero h1 span { color: var(--gold); font-style: normal; }
+  .hero p {
+    color: rgba(255,255,255,0.82);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .book-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  }
+
+  /* Form container */
+  .form-wrap {
+    max-width: 680px;
+    margin: -40px auto 60px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .form-card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(58, 90, 138, 0.15);
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--blue-light);
+    padding: 18px 32px;
+    border-left: 4px solid var(--blue);
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--blue-dark);
+  }
+  .section-header p {
+    font-size: 12px;
+    color: #666;
+    margin-top: 3px;
+  }
+
+  .section-body { padding: 28px 32px; }
+
+  .field {
+    margin-bottom: 24px;
+  }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+  label .req { color: #e05c5c; margin-left: 3px; }
+  label .hint {
+    font-weight: 300;
+    color: #888;
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e0ddd8;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fdfcfb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(107, 143, 194, 0.15);
+    background: #fff;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* Genre checkboxes */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid #e0ddd8;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fdfcfb;
+  }
+  .check-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .check-item input[type="checkbox"] { display: none; }
+  .check-item.active {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .check-item .check-box {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 2px solid #bbb;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .check-item.active .check-box {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+    font-size: 11px;
+  }
+  .check-item span { font-size: 13px; }
+
+  /* Budget slider */
+  .budget-display {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--blue-dark);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .budget-display small { font-size: 1rem; color: #888; font-family: 'DM Sans', sans-serif; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--blue) 0%, var(--blue) var(--pct, 30%), #e0ddd8 var(--pct, 30%), #e0ddd8 100%);
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--blue-dark);
+    box-shadow: 0 2px 8px rgba(58,90,138,0.4);
+    cursor: pointer;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 6px;
+  }
+
+  /* Radio */
+  .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .radio-item {
+    padding: 9px 18px;
+    border: 1.5px solid #e0ddd8;
+    border-radius: 50px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fdfcfb;
+  }
+  .radio-item:hover { border-color: var(--blue); }
+  .radio-item.active {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    color: white;
+    font-weight: 500;
+  }
+  .radio-item input { display: none; }
+
+  /* Divider between sections */
+  .section-divider { height: 1px; background: #f0ece6; }
+
+  /* Submit */
+  .submit-area {
+    padding: 28px 32px;
+    background: linear-gradient(135deg, #f8f5f0, #eef3fa);
+    text-align: center;
+  }
+  .submit-note {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  .submit-note a { color: var(--blue); text-decoration: none; }
+
+  button[type="submit"] {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 6px 24px rgba(58,90,138,0.35);
+    transition: all 0.25s;
+  }
+  button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(58,90,138,0.45);
+  }
+  button[type="submit"]:active { transform: translateY(0); }
+
+  /* Success */
+  .success-screen {
+    display: none;
+    padding: 60px 32px;
+    text-align: center;
+  }
+  .success-screen .icon { font-size: 56px; margin-bottom: 20px; }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--blue-dark);
+    margin-bottom: 12px;
+  }
+  .success-screen p { color: #666; font-size: 14px; line-height: 1.7; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #bbb;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 500px) {
+    .section-body, .submit-area, .section-header { padding-left: 20px; padding-right: 20px; }
+    .check-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="book-icon">📚</span>
+  <div class="hero-label">Enquête Communauté</div>
+  <h1>Quels livres voulez-vous <span>vraiment</span> lire ?</h1>
+  <p>Aidez-nous à sélectionner les meilleurs titres pour vous. Répondez en 3 minutes — nous vous contacterons dès que votre livre est disponible.</p>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <div class="form-card" id="mainForm">
+
+    <!-- SECTION 1: Identité -->
+    <div class="section-header">
+      <h2>👤 Vos informations</h2>
+      <p>Pour vous notifier quand votre livre est disponible</p>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Prénom & Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="Ex : Fatou Diallo" required>
+      </div>
+      <div class="field">
+        <label>Numéro WhatsApp / Téléphone <span class="req">*</span> <span class="hint">— pour vous contacter rapidement</span></label>
+        <input type="tel" id="telephone" placeholder="+229 97 000 000">
+      </div>
+      <div class="field">
+        <label>Email <span class="hint">— facultatif</span></label>
+        <input type="email" id="email" placeholder="vous@exemple.com">
+      </div>
+      <div class="field">
+        <label>Ville / Quartier</label>
+        <input type="text" id="ville" placeholder="Ex : Cotonou, Cadjehoun">
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 2: Genres -->
+    <div class="section-header">
+      <h2>📖 Vos genres préférés</h2>
+      <p>Sélectionnez tout ce qui vous intéresse</p>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <div class="check-grid" id="genreGrid">
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Développement personnel</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Business & Entrepreneuriat</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Finance & Investissement</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Leadership & Management</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Roman & Fiction</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Histoire & Biographies</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Spiritualité & Bien-être</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Sciences & Technologie</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Jeunesse & Enfants</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Cuisine & Lifestyle</span>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Autre genre souhaité</label>
+        <input type="text" id="autreGenre" placeholder="Précisez si besoin...">
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 3: Livres -->
+    <div class="section-header">
+      <h2>✍️ Les livres que vous voulez</h2>
+      <p>Titres précis ou auteurs que vous aimeriez trouver</p>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Titre(s) de livre(s) souhaité(s) <span class="req">*</span></label>
+        <textarea id="titres" placeholder="Ex : Penser et devenir riche – Napoleon Hill&#10;De Zéro à Un – Peter Thiel&#10;Père riche, père pauvre..."></textarea>
+      </div>
+      <div class="field">
+        <label>Préférence de langue</label>
+        <div class="radio-group" id="langueGroup">
+          <div class="radio-item active" onclick="selectRadio(this, 'langueGroup')">Français 🇫🇷</div>
+          <div class="radio-item" onclick="selectRadio(this, 'langueGroup')">Anglais 🇬🇧</div>
+          <div class="radio-item" onclick="selectRadio(this, 'langueGroup')">Les deux</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 4: Budget -->
+    <div class="section-header">
+      <h2>💰 Votre budget</h2>
+      <p>Combien seriez-vous prêt(e) à payer par livre ?</p>
+    </div>
+    <div class="section-body">
+      <div class="budget-display" id="budgetDisplay">5 000 <small>FCFA</small></div>
+      <input type="range" id="budgetSlider" min="1000" max="30000" step="500" value="5000"
+        oninput="updateBudget(this.value)">
+      <div class="range-labels"><span>1 000 FCFA</span><span>30 000 FCFA</span></div>
+
+      <div class="field" style="margin-top:24px;">
+        <label>Format préféré</label>
+        <div class="radio-group" id="formatGroup">
+          <div class="radio-item active" onclick="selectRadio(this, 'formatGroup')">📘 Papier</div>
+          <div class="radio-item" onclick="selectRadio(this, 'formatGroup')">📱 PDF / Numérique</div>
+          <div class="radio-item" onclick="selectRadio(this, 'formatGroup')">Les deux</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Urgence d'achat</label>
+        <div class="radio-group" id="urgenceGroup">
+          <div class="radio-item active" onclick="selectRadio(this, 'urgenceGroup')">🔥 Dès que possible</div>
+          <div class="radio-item" onclick="selectRadio(this, 'urgenceGroup')">📅 Dans 1 mois</div>
+          <div class="radio-item" onclick="selectRadio(this, 'urgenceGroup')">🕐 Pas pressé(e)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 5: Contact -->
+    <div class="section-header">
+      <h2>📣 Comment préférez-vous être contacté(e) ?</h2>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <div class="radio-group" id="contactGroup">
+          <div class="radio-item active" onclick="selectRadio(this, 'contactGroup')">💬 WhatsApp</div>
+          <div class="radio-item" onclick="selectRadio(this, 'contactGroup')">📞 Appel</div>
+          <div class="radio-item" onclick="selectRadio(this, 'contactGroup')">✉️ Email</div>
+          <div class="radio-item" onclick="selectRadio(this, 'contactGroup')">📱 SMS</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Commentaire ou suggestion libre</label>
+        <textarea id="commentaire" placeholder="Des auteurs favoris, des thèmes précis, des besoins particuliers..."></textarea>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+      <p class="submit-note">
+        Vos données restent confidentielles et ne seront utilisées que pour<br>vous notifier de la disponibilité des livres que vous souhaitez.
+      </p>
+      <button type="submit" onclick="submitForm()">Envoyer ma sélection 📚</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="icon">🎉</div>
+      <h2>Merci pour votre réponse !</h2>
+      <p>Nous avons bien reçu vos préférences.<br>Dès que nous trouvons vos livres, nous vous contactons directement.<br><br>
+      <strong>À très bientôt sur notre boutique !</strong></p>
+    </div>
+
+  </div><!-- /form-card -->
+</div>
+
+<footer>© 2024 — Votre Librairie Communautaire</footer>
+
+<script>
+  function toggleCheck(el) {
+    el.classList.toggle('active');
+    const box = el.querySelector('.check-box');
+    box.textContent = el.classList.contains('active') ? '✓' : '';
+  }
+
+  function selectRadio(el, groupId) {
+    document.querySelectorAll(`#${groupId} .radio-item`).forEach(r => r.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function updateBudget(val) {
+    const formatted = parseInt(val).toLocaleString('fr-FR');
+    document.getElementById('budgetDisplay').innerHTML = `${formatted} <small>FCFA</small>`;
+    const min = 1000, max = 30000;
+    const pct = ((val - min) / (max - min)) * 100;
+    const slider = document.getElementById('budgetSlider');
+    slider.style.setProperty('--pct', pct + '%');
+  }
+
+  function submitForm() {
+    const nom = document.getElementById('nom').value.trim();
+    const tel = document.getElementById('telephone').value.trim();
+    const titres = document.getElementById('titres').value.trim();
+
+    if (!nom) { alert('Veuillez entrer votre nom.'); return; }
+    if (!tel) { alert('Veuillez entrer votre numéro WhatsApp / téléphone.'); return; }
+    if (!titres) { alert('Veuillez indiquer au moins un titre de livre souhaité.'); return; }
+
+    // Collect data
+    const genres = [...document.querySelectorAll('#genreGrid .check-item.active')].map(el => el.querySelector('span').textContent);
+    const langue = document.querySelector('#langueGroup .active')?.textContent || '';
+    const format = document.querySelector('#formatGroup .active')?.textContent || '';
+    const urgence = document.querySelector('#urgenceGroup .active')?.textContent || '';
+    const contact = document.querySelector('#contactGroup .active')?.textContent || '';
+    const budget = document.getElementById('budgetSlider').value;
+
+    console.log({
+      nom, tel,
+      email: document.getElementById('email').value,
+      ville: document.getElementById('ville').value,
+      genres, titres, langue, format, urgence, contact, budget,
+      commentaire: document.getElementById('commentaire').value
+    });
+
+    // Hide form sections, show success
+    document.querySelectorAll('.section-header, .section-body, .section-divider, .submit-area').forEach(el => el.style.display = 'none');
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Init slider color
+  updateBudget(5000);
+</script>
+</body>
+</html>
