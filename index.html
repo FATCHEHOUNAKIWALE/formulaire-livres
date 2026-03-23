@@ -369,6 +369,8 @@
     </div>
     <div class="section-body">
       <div class="field">
+        <!-- Sous-section générale -->
+        <div style="font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:8px;">📚 Général</div>
         <div class="check-grid" id="genreGrid">
           <div class="check-item" onclick="toggleCheck(this)">
             <div class="check-box"></div><span>Développement personnel</span>
@@ -392,13 +394,101 @@
             <div class="check-box"></div><span>Spiritualité & Bien-être</span>
           </div>
           <div class="check-item" onclick="toggleCheck(this)">
-            <div class="check-box"></div><span>Sciences & Technologie</span>
-          </div>
-          <div class="check-item" onclick="toggleCheck(this)">
             <div class="check-box"></div><span>Jeunesse & Enfants</span>
           </div>
           <div class="check-item" onclick="toggleCheck(this)">
             <div class="check-box"></div><span>Cuisine & Lifestyle</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Droit & Juridique</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Médecine & Santé</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Sciences humaines</span>
+          </div>
+        </div>
+
+        <!-- Sous-section Informatique -->
+        <div style="font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#888;margin:20px 0 8px;">💻 Informatique</div>
+        <div class="check-grid">
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Programmation & Code</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Intelligence Artificielle</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Machine Learning / Data</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Cybersécurité</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Réseaux & Systèmes</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Développement Web</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Développement Mobile</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Bases de données</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Cloud & DevOps</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Blockchain & Web3</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>UI/UX & Design</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Gestion de projet IT</span>
+          </div>
+        </div>
+
+        <!-- Sous-section Ingénierie -->
+        <div style="font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#888;margin:20px 0 8px;">⚙️ Ingénierie</div>
+        <div class="check-grid">
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Génie civil & BTP</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Génie électrique</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Génie mécanique</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Électronique & Embarqué</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Énergies renouvelables</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Télécommunications</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Robotique & Automatisme</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Génie industriel</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Architecture & Urbanisme</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Mathématiques appliquées</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Physique & Chimie</span>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div><span>Environnement & Écologie</span>
           </div>
         </div>
       </div>
@@ -525,7 +615,7 @@
     slider.style.setProperty('--pct', pct + '%');
   }
 
-  function submitForm() {
+  async function submitForm() {
     const nom = document.getElementById('nom').value.trim();
     const tel = document.getElementById('telephone').value.trim();
     const titres = document.getElementById('titres').value.trim();
@@ -535,22 +625,72 @@
     if (!titres) { alert('Veuillez indiquer au moins un titre de livre souhaité.'); return; }
 
     // Collect data
-    const genres = [...document.querySelectorAll('#genreGrid .check-item.active')].map(el => el.querySelector('span').textContent);
+    const genres = [...document.querySelectorAll('.check-item.active')].map(el => el.querySelector('span').textContent);
     const langue = document.querySelector('#langueGroup .active')?.textContent || '';
     const format = document.querySelector('#formatGroup .active')?.textContent || '';
     const urgence = document.querySelector('#urgenceGroup .active')?.textContent || '';
     const contact = document.querySelector('#contactGroup .active')?.textContent || '';
-    const budget = document.getElementById('budgetSlider').value;
+    const budget = parseInt(document.getElementById('budgetSlider').value).toLocaleString('fr-FR') + ' FCFA';
+    const email = document.getElementById('email').value;
+    const ville = document.getElementById('ville').value;
+    const commentaire = document.getElementById('commentaire').value;
 
-    console.log({
-      nom, tel,
-      email: document.getElementById('email').value,
-      ville: document.getElementById('ville').value,
-      genres, titres, langue, format, urgence, contact, budget,
-      commentaire: document.getElementById('commentaire').value
-    });
+    // ── 1. Envoi par email via Formspree ──────────────────────────────────
+    // INSTRUCTION : Créez un compte gratuit sur https://formspree.io
+    // puis remplacez "VOTRE_ID_FORMSPREE" ci-dessous par votre vrai ID
+    // Exemple : https://formspree.io/f/xpwzgjkl
+    const FORMSPREE_ID = 'VOTRE_ID_FORMSPREE';
 
-    // Hide form sections, show success
+    const formData = {
+      _subject: `📚 Nouvelle sélection de livres – ${nom}`,
+      _replyto: email || tel,
+      Nom: nom,
+      Telephone_WhatsApp: tel,
+      Email: email || '(non renseigné)',
+      Ville: ville || '(non renseignée)',
+      Genres_selectionnes: genres.join(', ') || 'Aucun',
+      Livres_souhaites: titres,
+      Langue: langue,
+      Format: format,
+      Budget: budget,
+      Urgence: urgence,
+      Mode_contact_prefere: contact,
+      Commentaire: commentaire || '(aucun)'
+    };
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (!res.ok && FORMSPREE_ID !== 'VOTRE_ID_FORMSPREE') {
+        console.warn('Formspree error:', await res.text());
+      }
+    } catch(e) {
+      console.warn('Formspree non configuré ou erreur réseau:', e);
+    }
+
+    // ── 2. Notification WhatsApp ──────────────────────────────────────────
+    const whatsappNum = '2290154801952'; // Votre numéro
+    const msg = `📚 *NOUVELLE SÉLECTION DE LIVRES*\n\n`
+      + `👤 *Nom :* ${nom}\n`
+      + `📞 *Tél/WA :* ${tel}\n`
+      + (email ? `✉️ *Email :* ${email}\n` : '')
+      + (ville ? `📍 *Ville :* ${ville}\n` : '')
+      + `\n📖 *Genres :* ${genres.length ? genres.join(', ') : 'Non précisé'}\n`
+      + `\n📝 *Livres souhaités :*\n${titres}\n`
+      + `\n🌐 *Langue :* ${langue}\n`
+      + `📦 *Format :* ${format}\n`
+      + `💰 *Budget :* ${budget}\n`
+      + `⏰ *Urgence :* ${urgence}\n`
+      + `📣 *Contact préféré :* ${contact}\n`
+      + (commentaire ? `\n💬 *Commentaire :* ${commentaire}` : '');
+
+    // Ouvre WhatsApp avec le message pré-rempli vers votre numéro
+    window.open(`https://wa.me/${whatsappNum}?text=${encodeURIComponent(msg)}`, '_blank');
+
+    // ── 3. Afficher l'écran de succès ─────────────────────────────────────
     document.querySelectorAll('.section-header, .section-body, .section-divider, .submit-area').forEach(el => el.style.display = 'none');
     document.getElementById('successScreen').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
