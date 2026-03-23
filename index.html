@@ -635,44 +635,34 @@
     const ville = document.getElementById('ville').value;
     const commentaire = document.getElementById('commentaire').value;
 
-    // ── 1. Envoi par email via Formspree ──────────────────────────────────
-    // INSTRUCTION : Créez un compte gratuit sur https://formspree.io
-    // puis remplacez "VOTRE_ID_FORMSPREE" ci-dessous par votre vrai ID
-    // Exemple : https://formspree.io/f/xpwzgjkl
-    const FORMSPREE_ID = 'VOTRE_ID_FORMSPREE';
-
-    const formData = {
-      _subject: `📚 Nouvelle sélection de livres – ${nom}`,
-      _replyto: email || tel,
-      Nom: nom,
-      Telephone_WhatsApp: tel,
-      Email: email || '(non renseigné)',
-      Ville: ville || '(non renseignée)',
-      Genres_selectionnes: genres.join(', ') || 'Aucun',
-      Livres_souhaites: titres,
-      Langue: langue,
-      Format: format,
-      Budget: budget,
-      Urgence: urgence,
-      Mode_contact_prefere: contact,
-      Commentaire: commentaire || '(aucun)'
-    };
-
+    // ── 1. Envoi par email via Formspree ─────────────────────────────────
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      await fetch('https://formspree.io/f/xjgaqlnp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          _subject: `📚 Nouvelle sélection de livres – ${nom}`,
+          _replyto: email || tel,
+          Nom: nom,
+          Telephone_WhatsApp: tel,
+          Email: email || '(non renseigné)',
+          Ville: ville || '(non renseignée)',
+          Genres: genres.length ? genres.join(', ') : 'Aucun',
+          Livres_souhaites: titres,
+          Langue: langue,
+          Format: format,
+          Budget: budget,
+          Urgence: urgence,
+          Contact_prefere: contact,
+          Commentaire: commentaire || '(aucun)'
+        })
       });
-      if (!res.ok && FORMSPREE_ID !== 'VOTRE_ID_FORMSPREE') {
-        console.warn('Formspree error:', await res.text());
-      }
     } catch(e) {
-      console.warn('Formspree non configuré ou erreur réseau:', e);
+      console.warn('Formspree erreur:', e);
     }
 
     // ── 2. Notification WhatsApp ──────────────────────────────────────────
-    const whatsappNum = '2290154801952'; // Votre numéro
+    const whatsappNum = '2290153540853'; // Votre numéro
     const msg = `📚 *NOUVELLE SÉLECTION DE LIVRES*\n\n`
       + `👤 *Nom :* ${nom}\n`
       + `📞 *Tél/WA :* ${tel}\n`
